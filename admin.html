@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EduFlow 360 | Admin Skill Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#050505] text-white p-10">
+    <div class="max-w-2xl mx-auto glass p-8 rounded-3xl border border-white/10">
+        <h1 class="text-3xl font-bold mb-6">Skill Momentum Editor</h1>
+        <div id="adminSkillList" class="space-y-6">
+            </div>
+        <button onclick="updateAllSkills()" class="mt-8 w-full py-4 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold transition-all">
+            Update Student Momentum
+        </button>
+    </div>
+
+    <script>
+        const studentId = localStorage.getItem('studentId') || 1;
+
+        async function loadSkillsForEditing() {
+            const res = await fetch(`http://localhost:8080/api/dashboard/${studentId}`);
+            const data = await res.json();
+            const container = document.getElementById('adminSkillList');
+            
+            container.innerHTML = Object.entries(data.skills).map(([name, level]) => `
+                <div class="flex items-center justify-between bg-white/5 p-4 rounded-xl">
+                    <span class="font-semibold">${name}</span>
+                    <input type="number" data-skill="${name}" value="${level}" min="0" max="100" 
+                           class="w-20 bg-black border border-white/20 rounded-lg px-2 py-1 text-center focus:border-purple-500 outline-none">
+                </div>
+            `).join('');
+        }
+
+        async function updateAllSkills() {
+            const inputs = document.querySelectorAll('input[data-skill]');
+            for (let input of inputs) {
+                const skillName = input.getAttribute('data-skill');
+                const level = input.value;
+
+                await fetch(`http://localhost:8080/api/skills/update`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ studentId, skillName, level })
+                });
+            }
+            alert("Momentum Updated! Check your Dashboard.");
+        }
+
+        window.onload = loadSkillsForEditing;
+    </script>
+</body>
+</html>

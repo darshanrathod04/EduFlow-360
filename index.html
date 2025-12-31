@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EduFlow 360 | Living Intelligence</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#050505] overflow-hidden">
+
+    <canvas id="projector" class="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-40"></canvas>
+
+    <div id="dashboard-wrapper" class="relative z-10 w-full h-screen overflow-y-auto">
+
+        <header class="topbar relative py-10 flex flex-col items-center">
+            <h1 id="main-title" class="text-5xl font-black tracking-tighter">EduFlow 360</h1>
+            <span class="subtitle text-blue-400 tracking-[0.3em] uppercase text-xs" id="flow-status">
+                Living Academic Intelligence
+            </span>
+            <button class="focus-btn absolute top-10 right-10" onclick="toggleFocusMode()">
+                Toggle Focus Mode 🎯
+            </button>
+        </header>
+
+        <main class="dashboard grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-10" id="dashboard">
+
+            <section class="card interactive" data-type="flow">
+                <h2 class="text-xl font-bold mb-2">Learning Flow</h2>
+                <p class="hint text-gray-500 text-xs mb-4">View progress dynamics</p>
+                <div class="ring-container flex flex-col items-center">
+                    <svg width="120" height="120" class="transform -rotate-90">
+                        <circle class="ring-bg" cx="60" cy="60" r="50" fill="transparent" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                        <circle class="ring-progress" cx="60" cy="60" r="50" fill="transparent" stroke="#3b82f6" stroke-width="8" stroke-dasharray="314" stroke-dashoffset="314" style="transition: stroke-dashoffset 1s ease;"/>
+                    </svg>
+                    <span class="ring-text text-2xl font-bold mt-[-75px] mb-[45px]">0%</span>
+                </div>
+            </section>
+
+            <section class="card interactive" data-type="skill">
+                <h2 class="text-xl font-bold mb-2">Skill Momentum</h2>
+                <p class="hint text-gray-500 text-xs mb-4">Track skill growth</p>
+                <div class="skills space-y-3">
+                    <div class="skill"><span>Java</span><div class="bar h-2 bg-blue-600 rounded" style="width: 0%"></div></div>
+                    <div class="skill"><span>HTML</span><div class="bar h-2 bg-blue-600 rounded" style="width: 0%"></div></div>
+                    <div class="skill"><span>CSS</span><div class="bar h-2 bg-blue-600 rounded" style="width: 0%"></div></div>
+                    <div class="skill"><span>JS</span><div class="bar h-2 bg-blue-600 rounded" style="width: 0%"></div></div>
+                </div>
+            </section>
+
+            <section class="card interactive" data-type="timeline">
+                <h2 class="text-xl font-bold mb-2">Academic Timeline</h2>
+                <p class="hint text-gray-500 text-xs">Semester journey</p>
+                <div class="py-10 text-center text-gray-500">
+                    Interactive scroll active below.
+                </div>
+            </section>
+
+            <section class="card interactive" data-type="consistency">
+                <h2 class="text-xl font-bold mb-2">Consistency Tracker</h2>
+                <p class="hint text-gray-500 text-xs mb-4">Study discipline</p>
+                <div class="consistency">
+                    <div class="meter w-full bg-white/10 h-4 rounded-full overflow-hidden">
+                        <div class="fill bg-green-500 h-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <span class="percent block text-right mt-2 font-bold">0%</span>
+                </div>
+            </section>
+
+            <section class="card reflection-mode col-span-1 md:col-span-2 lg:col-span-4">
+                <h2 class="text-xl font-bold mb-2">Student Reflection</h2>
+                <p class="hint text-gray-500 text-xs mb-4">Connect your thoughts to your growth</p>
+                <textarea id="reflectionInput" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white outline-none focus:border-blue-500" placeholder="What worked today? What failed?"></textarea>
+                <button onclick="saveNote()" class="mt-4 px-8 py-3 bg-blue-600 rounded-full font-bold hover:bg-blue-500 transition-all">Sync Reflection</button>
+                <div id="notesList" class="notes-history mt-6 space-y-2"></div>
+            </section>
+        </main>
+
+        <section class="timeline-wrapper fixed bottom-0 w-full bg-black/40 backdrop-blur-md py-6 border-t border-white/10">
+            <div class="timeline flex justify-center gap-6" id="timeline">
+                <div class="time-card active-semester px-6 py-2 rounded-full cursor-pointer transition-all" data-semester="1">Semester 1</div>
+                <div class="time-card px-6 py-2 rounded-full cursor-pointer transition-all" data-semester="2">Semester 2</div>
+                <div class="time-card px-6 py-2 rounded-full cursor-pointer transition-all" data-semester="3">Semester 3</div>
+                <div class="time-card px-6 py-2 rounded-full cursor-pointer transition-all" data-semester="4">Semester 4</div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/animation.js"></script>
+</body>
+</html>

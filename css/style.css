@@ -1,0 +1,259 @@
+/* =========================================================================
+    CORE & THEME VARIABLES
+========================================================================= */
+:root {
+    --bg-dark: #050505;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --pulse-glow: 15px;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: white;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+}
+
+/* Vignette effect to make particles pop at the center */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Background Particle Canvas */
+#projector {
+    background: radial-gradient(circle at center, #0a1122 0%, #050505 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* =========================================================================
+    CENTERED HEADER & BRANDING
+========================================================================= */
+.topbar {
+    position: relative;
+    width: 100%;
+    padding: 60px 0 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+
+#main-title {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -3px;
+    margin: 0;
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.subtitle {
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    margin-top: 5px;
+    transition: all 0.5s ease;
+}
+
+/* Pulse animation for data fetching */
+.fetching-data {
+    animation: title-glow 1.5s infinite alternate;
+    color: white !important;
+}
+
+@keyframes title-glow {
+    from { text-shadow: 0 0 5px rgba(59, 130, 246, 0.2); opacity: 0.7; }
+    to { text-shadow: 0 0 25px rgba(59, 130, 246, 1); opacity: 1; }
+}
+
+/* =========================================================================
+    DASHBOARD CARDS (GLASSMORPHISM)
+========================================================================= */
+.dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 20px 50px 150px 50px; /* Extra bottom padding for timeline */
+}
+
+.card {
+    background: var(--glass) !important;
+    backdrop-filter: blur(25px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 40px !important;
+    padding: 35px !important;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(59, 130, 246, 0.5) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.15) !important;
+}
+
+.hint {
+    color: #60a5fa !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+/* =========================================================================
+    VISUAL DATA ELEMENTS
+========================================================================= */
+/* Rings */
+.ring-progress {
+    stroke: var(--accent-blue) !important;
+    filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.8));
+    stroke-width: 7px;
+    stroke-linecap: round;
+}
+
+/* Bars */
+.bar {
+    height: 10px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)) !important;
+    border-radius: 50px;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    width: 0%; /* Animated via JS */
+    transition: width 1.5s cubic-bezier(0.1, 0.5, 0.5, 1);
+}
+
+/* =========================================================================
+    INFINITE TIMELINE (BOTTOM)
+========================================================================= */
+.timeline-wrapper {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    padding: 25px 0;
+    border-top: 1px solid var(--glass-border);
+    z-index: 100;
+}
+
+.timeline {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    animation: scroll-loop 60s linear infinite;
+    padding-left: 50px;
+}
+
+.timeline:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scroll-loop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.time-card {
+    padding: 12px 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.4s;
+    font-weight: bold;
+    color: #aaa;
+}
+
+.time-card:hover, .active-semester {
+    background: var(--accent-blue) !important;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    border-color: transparent !important;
+}
+
+/* =========================================================================
+    INTERACTIVE COMPONENTS
+========================================================================= */
+.focus-btn {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    z-index: 1000;
+    padding: 12px 24px;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.focus-btn:hover {
+    background: var(--accent-blue);
+    transform: scale(1.05);
+}
+
+#reflectionInput {
+    width: 100%;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    color: white;
+    padding: 20px;
+    margin-top: 15px;
+    resize: none;
+    outline: none;
+}
+
+.prediction-style {
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: #0cdbf3;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(12, 219, 243, 0.5);
+}
+
+/* Error Toast for Backend Issues */
+.error-toast {
+    position: fixed;
+    bottom: 120px;
+    right: 30px;
+    background: rgba(239, 68, 68, 0.9);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 20px;
+    z-index: 2000;
+    font-weight: bold;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
